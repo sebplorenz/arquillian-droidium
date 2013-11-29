@@ -171,7 +171,8 @@ public class AndroidEmulatorStartup {
         ProcessInteractionBuilder interactions = new ProcessInteractionBuilder()
                 .errors("^SDL init failure.*$")
                 .errors("^PANIC:.*$")
-                .errors("^error.*$");
+                .errors("^error.*$")
+                .errors("^.*$");
 
         // execute emulator
         try {
