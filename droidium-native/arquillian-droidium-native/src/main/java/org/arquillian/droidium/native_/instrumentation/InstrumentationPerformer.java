@@ -91,9 +91,6 @@ public class InstrumentationPerformer {
 
     public void performInstrumentation(@Observes PerformInstrumentation event) {
 
-        beforeInstrumentationPerformed.fire(new BeforeInstrumentationPerformed(event.getDeploymentName(), event
-            .getConfiguration()));
-
         AndroidDeployment instrumentedDeployment = androidDeploymentRegister.get().get(event.getDeploymentName());
 
         File selendroidWorkingCopy = getSelendroidWorkingCopy();
@@ -119,8 +116,6 @@ public class InstrumentationPerformer {
         selendroidDeploy.fire(new SelendroidDeploy(deployment));
 
         selendroidServerManager.get().instrument(deployment);
-
-        afterInstrumentationPerformed.fire(new AfterInstrumentationPerformed(event.getDeploymentName(), event.getConfiguration()));
     }
 
     private File getSelendroidResigned(File selendroidRebuilt) {

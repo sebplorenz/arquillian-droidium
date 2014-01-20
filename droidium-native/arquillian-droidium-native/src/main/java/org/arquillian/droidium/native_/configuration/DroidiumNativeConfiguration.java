@@ -32,10 +32,16 @@ public class DroidiumNativeConfiguration {
 
     private String serverApk = "selendroid-server.apk";
 
+    private String androidDriverApk = "android-driver.apk";
+
     private Map<String, String> properties = new HashMap<String, String>();
 
     public File getServerApk() {
         return new File(getProperty("serverApk", serverApk));
+    }
+
+    public File getAndroidDriverApk() {
+        return new File(getProperty("androidDriverApk", androidDriverApk));
     }
 
     /**
@@ -95,6 +101,12 @@ public class DroidiumNativeConfiguration {
     public void validate() throws IllegalArgumentException, IllegalStateException {
         Validate.isReadable(getServerApk(), "You must provide a valid path to Android Server APK for "
             + "Arquillian Droidium native plugin. Plese be sure you have read access to the file you entered: "
-            + getServerApk());
+            + getServerApk().getAbsolutePath());
+
+        if (getAndroidDriverApk().exists()) {
+            Validate.isReadable(getAndroidDriverApk(), "You must provide a valid path to Android Driver APK for "
+                + "Arquillian Droidium native plugin. Please be sure you have read access to the file you entered: "
+                + getAndroidDriverApk().getAbsolutePath());
+        }
     }
 }

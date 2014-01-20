@@ -17,7 +17,9 @@
  */
 package org.arquillian.droidium.container;
 
+import org.arquillian.droidium.container.activity.DefaultActivityManager;
 import org.arquillian.droidium.container.activity.DefaultActivityManagerProvider;
+import org.arquillian.droidium.container.api.ActivityManager;
 import org.arquillian.droidium.container.api.ActivityManagerProvider;
 import org.arquillian.droidium.container.api.AndroidDevice;
 import org.arquillian.droidium.container.api.FileType;
@@ -114,6 +116,10 @@ public class AndroidDeployableContainer implements DeployableContainer<AndroidCo
     private InstanceProducer<AndroidDeploymentRegister> androidDeploymentRegister;
 
     @Inject
+    @SuiteScoped
+    private InstanceProducer<ActivityManager> activityManager;
+
+    @Inject
     private Event<AndroidContainerStart> androidContainerStartEvent;
 
     @Inject
@@ -192,7 +198,14 @@ public class AndroidDeployableContainer implements DeployableContainer<AndroidCo
 
     public void onAndroidDeviceReady(@Observes AndroidDeviceReady event) {
         ActivityManagerProvider activityManagerProvider = getActivityManagerProvider();
-        androidDevice.get().setActivityManagerProvider(activityManagerProvider);
+
+        AndroidDevice device = androidDevice.get();
+
+        device.setActivityManagerProvider(activityManagerProvider);
+        device.getActivityManagerProvider().setActivityManager(new DefaultActivityManager(device));
+
+        this.activityManager.set(device.getActivityManagerProvider().getActivityManager());
+
         this.androidApplicationManager
             .set(new AndroidApplicationManager(androidDevice.get(), executor.get(), androidSDK.get()));
     }

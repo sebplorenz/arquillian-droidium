@@ -16,6 +16,7 @@
  */
 package org.arquillian.droidium.native_.configuration;
 
+import org.arquillian.droidium.container.api.ActivityManager;
 import org.arquillian.droidium.container.api.AndroidDevice;
 import org.arquillian.droidium.container.configuration.AndroidContainerConfiguration;
 import org.arquillian.droidium.container.configuration.AndroidSDK;
@@ -104,6 +105,10 @@ public class DroidiumNativeResourceManager {
 
     @Inject
     @SuiteScoped
+    private InstanceProducer<ActivityManager> activityManager;
+
+    @Inject
+    @SuiteScoped
     private InstanceProducer<SelendroidDeploymentRegister> selendroidDeploymentRegister;
 
     /**
@@ -123,7 +128,11 @@ public class DroidiumNativeResourceManager {
             selendroidRebuilder.set(getSelendroidRebuilder());
             selendroidDeploymentRegister.set(new SelendroidDeploymentRegister());
 
-            NativeActivityManager activityManager = new NativeActivityManager(activityWebDriverMapper.get());
+            // overrides activity manager created in container adapter after AndroidDeviceReady event
+            // in order to get "webdriver"-aware activity manager
+            ActivityManager activityManager = getActivityManager();
+
+            this.activityManager.set(activityManager);
             androidDevice.get().getActivityManagerProvider().setActivityManager(activityManager);
         }
     }
@@ -134,6 +143,11 @@ public class DroidiumNativeResourceManager {
     }
 
     // helpers
+
+    private ActivityManager getActivityManager() {
+        ActivityManager activityManager = new NativeActivityManager(activityWebDriverMapper.get());
+        return activityManager;
+    }
 
     private DeploymentWebDriverMapper getDeploymentWebDriverMapper() {
         DeploymentWebDriverMapper deploymentWebDriverMapper = new DeploymentWebDriverMapper();

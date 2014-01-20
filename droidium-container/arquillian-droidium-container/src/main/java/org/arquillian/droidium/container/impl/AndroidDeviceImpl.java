@@ -68,9 +68,6 @@ public class AndroidDeviceImpl implements AndroidDevice {
         Validate.notNull(activityManagerProvider,
             "Activity manager provider to set for Android device can not be a null object!");
         this.activityManagerProvider = activityManagerProvider;
-        if (activityManagerProvider instanceof DefaultActivityManagerProvider) {
-            activityManagerProvider.setActivityManager(new DefaultActivityManager(this));
-        }
     }
 
     @Override
