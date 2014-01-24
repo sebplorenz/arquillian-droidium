@@ -90,6 +90,8 @@ public class AndroidContainerConfiguration implements ContainerConfiguration {
 
     private String logPackageBlacklist;
 
+    private int ddmlibCommandTimeout = 20000;
+
     // by default null since its default value depends on androidSdkHome which
     // can be changed by user, when not set by user, it will be resolved in validate() in this class
     private String keystore = null;
@@ -393,6 +395,14 @@ public class AndroidContainerConfiguration implements ContainerConfiguration {
 
     public void setTmpDir(String tmpDir) {
         this.tmpDir = tmpDir;
+    }
+
+    public int getDdmlibCommandTimeout() {
+        return ddmlibCommandTimeout;
+    }
+
+    public void setDdmlibCommandTimeout(int ddmlibCommandTimeout) {
+        this.ddmlibCommandTimeout = ddmlibCommandTimeout;
     }
 
     public String resolveJavaHome() {

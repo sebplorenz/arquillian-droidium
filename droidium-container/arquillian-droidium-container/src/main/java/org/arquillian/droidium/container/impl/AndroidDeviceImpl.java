@@ -160,13 +160,17 @@ public class AndroidDeviceImpl implements AndroidDevice {
         try {
             delegate.executeShellCommand(command, new AndroidRecieverDelegate(reciever));
         } catch (TimeoutException e) {
+            e.printStackTrace();
             throw new AndroidExecutionException("Unable to execute command '" + command + "' within given timeout", e);
         } catch (AdbCommandRejectedException e) {
+            e.printStackTrace();
             throw new AndroidExecutionException("Unable to execute command '" + command + "', command was rejected", e);
         } catch (ShellCommandUnresponsiveException e) {
+            e.printStackTrace();
             throw new AndroidExecutionException("Unable to execute command '" + command + "', shell is not responsive",
                 e);
         } catch (IOException e) {
+            e.printStackTrace();
             throw new AndroidExecutionException("Unable to execute command '" + command + "'", e);
         }
 
