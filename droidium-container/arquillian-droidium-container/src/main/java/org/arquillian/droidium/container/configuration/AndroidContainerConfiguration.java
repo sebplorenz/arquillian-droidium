@@ -597,6 +597,7 @@ public class AndroidContainerConfiguration implements ContainerConfiguration {
         sb.append(String.format("%-40s %s\n", "logPackageBlacklist", logPackageBlacklist));
         sb.append(String.format("%-40s %s\n", "removeTmpDir", removeTmpDir));
         sb.append(String.format("%-40s %s\n", "tmpDir", tmpDir));
+        sb.append(String.format("%-40s %s\n", "ddmlibCommandTimeout", ddmlibCommandTimeout));
         sb.append(String.format("%-40s %s", "forceNewBridge", forceNewBridge));
         return sb.toString();
     }
